@@ -1,9 +1,10 @@
 from collections import Counter
+import json
 
 from utils.alphabet import rus_alf as alf
 
 
-def decode(input_file, output_file, shift: int = None):
+def decode(input_file, output_file, key_file, shift: int = None):
 
     res = ""
 
@@ -30,6 +31,9 @@ def decode(input_file, output_file, shift: int = None):
     with open(output_file, mode = "w", encoding = "utf-8") as f:
         f.write(res)
 
+    with open(key_file, mode = "w", encoding = "utf-8") as f:
+        json.dump(decoded_dict, f, ensure_ascii = False, indent=4)
+
 
 if __name__ == "__main__":
-    decode("lab_1\\task_1\\files\\output.txt", "lab_1\\task_1\\files\\ex.txt", 3)
+    decode("lab_1\\task_1\\files\\output.txt", "lab_1\\task_1\\files\\ex.txt", "lab_1\\task_1\\files\\key.json", 3)
