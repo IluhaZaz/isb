@@ -1,7 +1,13 @@
+import argparse
 from utils.alphabet import rus_alf as alf
 
-def encode(input_file, output_file, shift: int):
-    res = ""
+def encode(input_file: str, output_file: str, shift: int):
+
+    """
+    Encoding text from input_file with cesar's chipher with alphabet rotated by 'shift' times
+    """
+
+    res: str = ""
 
     with open(input_file, mode = "r", encoding = "utf-8") as f:
         s: str = f.readlines()
@@ -23,4 +29,12 @@ def encode(input_file, output_file, shift: int):
         f.write(res)
 
 if __name__ == "__main__":
-    encode("lab_1\\task_1\\files\\input.txt", "lab_1\\task_1\\files\\output.txt", 3)
+    parser = argparse.ArgumentParser(description = "Cesar's chipher encoder")
+    parser.add_argument("input_file", type = str, help = "Input file name")
+    parser.add_argument("output_file", type = str, help = "Output file name")
+    parser.add_argument('shift', type = int, help = 'Nums for rotation of alf')
+
+    args = parser.parse_args()
+
+    encode(args.input_file, args.output_file, args.shift)
+    #python task_1\\cesar_encoder.py task_1\\files\\input.txt task_1\\files\\output.txt 3

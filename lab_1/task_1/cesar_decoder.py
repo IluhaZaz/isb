@@ -1,12 +1,17 @@
-from collections import Counter
 import json
+import argparse
+from collections import Counter
 
 from utils.alphabet import rus_alf as alf
 
 
-def decode(input_file, output_file, key_file, shift: int = None):
+def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
 
-    res = ""
+    """
+    Decoding text from input_file with cesar's chipher with alphabet rotated by 'shift' times
+    """
+
+    res: str = ""
 
     with open(input_file, mode = "r", encoding = "utf-8") as f:
         s: str = f.read()
@@ -24,7 +29,7 @@ def decode(input_file, output_file, key_file, shift: int = None):
     for i, j in zip(encoded_alf, alf):
         decoded_dict[i] = j
     
-    res = ""
+    res: str = ""
 
     for i in s:
         res += decoded_dict.get(i, i)
@@ -36,4 +41,14 @@ def decode(input_file, output_file, key_file, shift: int = None):
 
 
 if __name__ == "__main__":
-    decode("lab_1\\task_1\\files\\output.txt", "lab_1\\task_1\\files\\ex.txt", "lab_1\\task_1\\files\\key.json", 3)
+    parser = argparse.ArgumentParser(description = "Cesar's chipher decoder")
+    parser.add_argument("input_file", type = str, help = "Input file name")
+    parser.add_argument("output_file", type = str, help = "Output file name")
+    parser.add_argument("key_file", type = str, help = "File name to save decoded key")
+    parser.add_argument('--shift', type = int, default = None, help = 'Nums for rotation of alf')
+
+    args = parser.parse_args()
+
+    decode(args.input_file, args.output_file, args.key_file, args.shift)
+
+    #python task_1\\cesar_decoder.py task_1\\files\\output.txt task_1\\files\\ex.txt task_1\\files\\key.json --shift 3
