@@ -29,7 +29,7 @@ def encode(input_file: str, output_file: str, shift: int):
         f.write(res)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Cesar's chipher encoder")
+    parser = argparse.ArgumentParser(description = encode.__doc__)
     parser.add_argument("input_file", type = str, help = "Input file name")
     parser.add_argument("output_file", type = str, help = "Output file name")
     parser.add_argument('shift', type = int, help = 'Nums for rotation of alf')

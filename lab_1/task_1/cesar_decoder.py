@@ -41,7 +41,7 @@ def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Cesar's chipher decoder")
+    parser = argparse.ArgumentParser(description = decode.__doc__)
     parser.add_argument("input_file", type = str, help = "Input file name")
     parser.add_argument("output_file", type = str, help = "Output file name")
     parser.add_argument("key_file", type = str, help = "File name to save decoded key")
