@@ -1,4 +1,5 @@
 import argparse
+
 from collections import Counter
 
 def count_freq(input_file: str, output_file: str):

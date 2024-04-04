@@ -1,4 +1,5 @@
 import argparse
+
 from utils.alphabet import rus_alf as alf
 
 def encode(input_file: str, output_file: str, shift: int):
@@ -20,7 +21,6 @@ def encode(input_file: str, output_file: str, shift: int):
 
     for i, j in zip(encoded_alf, alf):
         encoded_dict[j] = i
-    
     
     for i in s:
         res += encoded_dict.get(i, i)

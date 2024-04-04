@@ -1,5 +1,6 @@
 import json
 import argparse
+
 from collections import Counter
 
 from utils.alphabet import rus_alf as alf
@@ -33,6 +34,7 @@ def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
 
     for i in s:
         res += decoded_dict.get(i, i)
+        
     with open(output_file, mode = "w", encoding = "utf-8") as f:
         f.write(res)
 
