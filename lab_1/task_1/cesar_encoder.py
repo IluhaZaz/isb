@@ -1,4 +1,5 @@
 import argparse
+import logging
 
 from utils.alphabet import rus_alf as alf
 
@@ -10,10 +11,14 @@ def encode(input_file: str, output_file: str, shift: int):
 
     res: str = ""
 
-    with open(input_file, mode = "r", encoding = "utf-8") as f:
-        s: str = f.readlines()
-        s = "".join(s)
-        s = s.upper()
+    try:
+        with open(input_file, mode = "r", encoding = "utf-8") as f:
+            s: str = f.readlines()
+            s = "".join(s)
+            s = s.upper()
+    except:
+        logger.critical("Can't open input file")
+        s = ""
 
     encoded_alf: str = alf[shift:] + alf[:shift]
 
@@ -28,6 +33,7 @@ def encode(input_file: str, output_file: str, shift: int):
     with open(output_file, mode = "w", encoding = "utf-8") as f:
         f.write(res)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = encode.__doc__)
     parser.add_argument("input_file", type = str, help = "Input file name")
@@ -35,6 +41,15 @@ if __name__ == "__main__":
     parser.add_argument('shift', type = int, help = 'Nums for rotation of alf')
 
     args = parser.parse_args()
+
+    logging.basicConfig(
+    level=logging.DEBUG,
+    format='[{asctime}] #{levelname:8} {filename}:'
+           '{lineno} - {name} - {message}',
+    style='{'
+)
+
+    logger = logging.getLogger(__name__)
 
     encode(args.input_file, args.output_file, args.shift)
     #python task_1\\cesar_encoder.py task_1\\files\\input.txt task_1\\files\\output.txt 3

@@ -1,5 +1,6 @@
 import json
 import argparse
+import logging
 
 from collections import Counter
 
@@ -13,10 +14,13 @@ def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
     """
 
     res: str = ""
-
-    with open(input_file, mode = "r", encoding = "utf-8") as f:
-        s: str = f.read()
-        s = s.upper()
+    try:
+        with open(input_file, mode = "r", encoding = "utf-8") as f:
+            s: str = f.read()
+            s = s.upper()
+    except:
+        logger.critical("Can't open input file")
+        s = ""
 
     if not shift:
         c = Counter(s)
@@ -50,6 +54,15 @@ if __name__ == "__main__":
     parser.add_argument('--shift', type = int, default = None, help = 'Nums for rotation of alf')
 
     args = parser.parse_args()
+
+    logging.basicConfig(
+    level=logging.DEBUG,
+    format='[{asctime}] #{levelname:8} {filename}:'
+           '{lineno} - {name} - {message}',
+    style='{'
+)
+
+    logger = logging.getLogger(__name__)
 
     decode(args.input_file, args.output_file, args.key_file, args.shift)
 
