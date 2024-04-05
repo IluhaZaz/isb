@@ -4,6 +4,7 @@ import logging
 from task_1.utils.constants import ALPHABETS
 from utils.io_to_file import write_to_file, read_file
 
+
 def encode(input_file: str, output_file: str, shift: int):
 
     alf = ALPHABETS["rus_alf"]
