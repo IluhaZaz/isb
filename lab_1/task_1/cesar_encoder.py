@@ -1,10 +1,12 @@
 import argparse
 import logging
 
-from utils.alphabet import rus_alf as alf
+from task_1.utils.constants import ALPHABETS
 from utils.io_to_file import write_to_file, read_file
 
 def encode(input_file: str, output_file: str, shift: int):
+
+    alf = ALPHABETS["rus_alf"]
 
     """
     Encoding text from input_file with cesar's chipher with alphabet rotated by 'shift' times

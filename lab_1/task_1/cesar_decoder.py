@@ -1,14 +1,15 @@
-import json
 import argparse
 import logging
 
 from collections import Counter
 
-from utils.alphabet import rus_alf as alf
+from utils.constants import ALPHABETS
 from utils.io_to_file import *
 
 
 def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
+
+    alf = ALPHABETS["rus_alf"]
 
     """
     Decoding text from input_file with cesar's chipher with alphabet rotated by 'shift' times
