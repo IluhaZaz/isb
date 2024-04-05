@@ -2,6 +2,8 @@ import json
 import argparse
 import logging
 
+from utils.io_to_file import read_file, read_json, write_to_file
+
 
 def decode(input_file: str, output_file: str, key_file: str):
 
@@ -9,26 +11,16 @@ def decode(input_file: str, output_file: str, key_file: str):
     Decoding text from input file with given key
     """
 
-    try:
-        with open(key_file, mode = "r", encoding = "utf-8") as file:
-            key: dict = json.loads(file.read())
-    except:
-        logger.critical("Can't open key file")
-        key = {}
+    key = read_json(key_file, logger)
 
-    try:
-        with open(input_file, mode = "r", encoding = "utf-8") as file:
-            s = file.read()
-    except:
-        logger.critical("Can't open input file")
-        s = ""
+    s = read_file(input_file, logger)
         
     res: str = ""
     for i in s:
         res += key.get(i, i)
     
-    with open(output_file, mode = "w", encoding = "utf-8") as file:
-        file.write(res)
+    write_to_file(output_file, res, logger)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = decode.__doc__)

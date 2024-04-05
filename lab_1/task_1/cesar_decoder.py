@@ -5,6 +5,7 @@ import logging
 from collections import Counter
 
 from utils.alphabet import rus_alf as alf
+from utils.io_to_file import *
 
 
 def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
@@ -14,13 +15,8 @@ def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
     """
 
     res: str = ""
-    try:
-        with open(input_file, mode = "r", encoding = "utf-8") as f:
-            s: str = f.read()
-            s = s.upper()
-    except:
-        logger.critical("Can't open input file")
-        s = ""
+    s = read_file(input_file, logger)
+    s = s.upper()
 
     if not shift:
         c = Counter(s)
@@ -39,11 +35,9 @@ def decode(input_file: str, output_file: str, key_file: str, shift: int = None):
     for i in s:
         res += decoded_dict.get(i, i)
         
-    with open(output_file, mode = "w", encoding = "utf-8") as f:
-        f.write(res)
+    write_to_file(output_file, res, logger)
 
-    with open(key_file, mode = "w", encoding = "utf-8") as f:
-        json.dump(decoded_dict, f, ensure_ascii = False, indent=4)
+    write_to_json(decoded_dict, key_file, logger)
 
 
 if __name__ == "__main__":

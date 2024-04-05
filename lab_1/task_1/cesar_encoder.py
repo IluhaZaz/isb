@@ -2,6 +2,7 @@ import argparse
 import logging
 
 from utils.alphabet import rus_alf as alf
+from utils.io_to_file import write_to_file, read_file
 
 def encode(input_file: str, output_file: str, shift: int):
 
@@ -11,14 +12,8 @@ def encode(input_file: str, output_file: str, shift: int):
 
     res: str = ""
 
-    try:
-        with open(input_file, mode = "r", encoding = "utf-8") as f:
-            s: str = f.readlines()
-            s = "".join(s)
-            s = s.upper()
-    except:
-        logger.critical("Can't open input file")
-        s = ""
+    s = read_file(input_file, logger)
+    s = s.upper()
 
     encoded_alf: str = alf[shift:] + alf[:shift]
 
@@ -30,8 +25,7 @@ def encode(input_file: str, output_file: str, shift: int):
     for i in s:
         res += encoded_dict.get(i, i)
 
-    with open(output_file, mode = "w", encoding = "utf-8") as f:
-        f.write(res)
+    write_to_file(output_file, res, logger)
 
 
 if __name__ == "__main__":

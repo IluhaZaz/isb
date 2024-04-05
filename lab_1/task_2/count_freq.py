@@ -3,24 +3,24 @@ import logging
 
 from collections import Counter
 
+from utils.io_to_file import read_file, write_to_file
+
+
 def count_freq(input_file: str, output_file: str):
 
     """
     Count frequency for each letter in input file
     """
-    try:
-        with open(input_file, mode = "r", encoding = "utf-8") as file:
-            s = file.read()
-    except:
-        logger.critical("Can't open input file")
-        s = ""
+    s = read_file(input_file, logger)
 
     c = Counter(s)
     l = len(s)
     
-    with open(output_file, mode = "w", encoding = "utf-8") as file:
-        for key, val in c.most_common():
-            file.write(f"{key}: {round(val/l, 5)}\n")
+    res = ""
+    for key, val in c.most_common():
+        res += f"{key}: {round(val/l, 5)}\n"
+    write_to_file(output_file, res, logger)
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = count_freq.__doc__)
