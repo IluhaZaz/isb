@@ -1,6 +1,7 @@
+import json
+
 from logging import Logger
 from typing import Dict
-import json
 
 
 def read_file(file: str, logger: Logger) -> str:
@@ -19,7 +20,7 @@ def write_to_file(file: str, text: str, logger: Logger) -> None:
             f.write(text)
     except:
         logger.critical("Can't open output file")
-        
+
 
 def write_to_json(d: Dict[str, str], file: str, logger: Logger) -> None:
     try:
