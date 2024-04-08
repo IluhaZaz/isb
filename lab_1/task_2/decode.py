@@ -1,7 +1,12 @@
 import argparse
 import logging
+import os
+import sys
 
-from utils.io_to_file import read_file, read_json, write_to_file
+project_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(project_directory)
+
+from io_to_file import read_json, read_file, write_to_file
 
 
 def decode(input_file: str, output_file: str, key_file: str):

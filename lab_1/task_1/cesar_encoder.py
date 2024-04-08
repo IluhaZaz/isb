@@ -1,8 +1,14 @@
 import argparse
 import logging
+import os
+import sys
 
+
+project_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(project_directory)
+
+from io_to_file import read_file, write_to_file
 from task_1.utils.constants import ALPHABETS
-from utils.io_to_file import write_to_file, read_file
 
 
 def encode(input_file: str, output_file: str, shift: int):
