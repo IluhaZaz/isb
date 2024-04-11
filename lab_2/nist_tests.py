@@ -7,13 +7,18 @@ from scipy.special import gammainc
 from utils.io_to_file import read_file
 from utils.help_funcs import max_ones_seq
 from utils.constants import pi0, pi1, pi2, pi3
+from utils.handlers import error_hendler
 
 
+logger: logging.Logger = None
+
+@error_hendler(logger)
 def frequency_bit_test(seq: str) -> float:
     sn = abs(sum([1 if i == "1" else -1 for i in seq]))/math.sqrt(len(seq))
     return math.erfc(sn/math.sqrt(2))
 
 
+@error_hendler(logger)
 def same_consecutive_bits(seq: str) -> float:
     n: int = len(seq)
     ones_part: float = seq.count("1")/n
@@ -26,6 +31,7 @@ def same_consecutive_bits(seq: str) -> float:
     return math.erfc(abs(vn - 2 * n * ones_part * (1 - ones_part))/(2*math.sqrt(2 * n) * ones_part * (1 - ones_part)))
 
 
+@error_hendler(logger)
 def longest_ones_seq(seq: str) -> float:
     n = len(seq)
     blocks: int = n//8
