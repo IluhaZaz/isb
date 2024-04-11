@@ -10,16 +10,24 @@ from utils.constants import pi0, pi1, pi2, pi3
 from utils.handlers import error_hendler
 
 
-logger: logging.Logger = None
-
-@error_hendler(logger)
 def frequency_bit_test(seq: str) -> float:
+
+    """
+    Performs frequency bit test and returns
+    P, which is probability that seq is random
+    """
+
     sn = abs(sum([1 if i == "1" else -1 for i in seq]))/math.sqrt(len(seq))
     return math.erfc(sn/math.sqrt(2))
 
 
-@error_hendler(logger)
 def same_consecutive_bits(seq: str) -> float:
+
+    """
+    Performs same consecutive bits test and returns
+    P, which is probability that seq is random
+    """
+
     n: int = len(seq)
     ones_part: float = seq.count("1")/n
 
@@ -31,8 +39,13 @@ def same_consecutive_bits(seq: str) -> float:
     return math.erfc(abs(vn - 2 * n * ones_part * (1 - ones_part))/(2*math.sqrt(2 * n) * ones_part * (1 - ones_part)))
 
 
-@error_hendler(logger)
 def longest_ones_seq(seq: str) -> float:
+
+    """
+    Permorms longest ones sequence test and returns
+    P, which is probability that seq is random
+    """
+
     n = len(seq)
     blocks: int = n//8
 
@@ -54,6 +67,7 @@ def longest_ones_seq(seq: str) -> float:
 
 
 def main(cpp_seq: str, java_seq: str, logger: logging.Logger) -> None:
+
     print(f"'P' value for frequency bit test(C++): {frequency_bit_test(cpp_seq)}")
     print(f"'P' value for frequency bit test(Java): {frequency_bit_test(java_seq)}")
 
@@ -84,6 +98,10 @@ if __name__ == "__main__":
 
     cpp_seq: str = read_file(args.cpp_seq_file, logger)
     java_seq: str = read_file(args.java_seq_file, logger)
+
+    frequency_bit_test = error_hendler(frequency_bit_test, logger)
+    same_consecutive_bits = error_hendler(same_consecutive_bits, logger)
+    longest_ones_seq = error_hendler(longest_ones_seq, logger)
 
     main(cpp_seq, java_seq, logger)
     #python nist_tests.py random_generators\\files\\cpp_gen.txt random_generators\\files\\java_gen.txt
