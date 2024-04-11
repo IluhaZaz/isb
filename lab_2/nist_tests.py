@@ -47,7 +47,7 @@ def longest_ones_seq(seq: str) -> float:
     return gammainc(1.5, xi2/2)
 
 
-def main(cpp_seq: str, java_seq: str, logger: logging.Logger):
+def main(cpp_seq: str, java_seq: str, logger: logging.Logger) -> None:
     print(f"'P' value for frequency bit test(C++): {frequency_bit_test(cpp_seq)}")
     print(f"'P' value for frequency bit test(Java): {frequency_bit_test(java_seq)}")
 
