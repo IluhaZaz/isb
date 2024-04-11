@@ -1,11 +1,10 @@
 from logging import Logger
 
 
-def error_hendler(func, logger: Logger):
+def error_handler(func, logger: Logger):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except Exception as e:
+        except Exception:
             logger.critical("Error encountered")
-            return None
     return wrapper

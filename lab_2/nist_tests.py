@@ -4,10 +4,10 @@ import math
 
 from scipy.special import gammainc
 
-from utils.io_to_file import read_file
+from utils.help_funcs import read_file
 from utils.help_funcs import max_ones_seq
 from utils.constants import pi0, pi1, pi2, pi3
-from utils.handlers import error_hendler
+from utils.handlers import error_handler
 
 
 def frequency_bit_test(seq: str) -> float:
@@ -66,7 +66,7 @@ def longest_ones_seq(seq: str) -> float:
     return gammainc(1.5, xi2/2)
 
 
-def main(cpp_seq: str, java_seq: str, logger: logging.Logger) -> None:
+def main(cpp_seq: str, java_seq: str) -> None:
 
     print(f"'P' value for frequency bit test(C++): {frequency_bit_test(cpp_seq)}")
     print(f"'P' value for frequency bit test(Java): {frequency_bit_test(java_seq)}")
@@ -99,9 +99,9 @@ if __name__ == "__main__":
     cpp_seq: str = read_file(args.cpp_seq_file, logger)
     java_seq: str = read_file(args.java_seq_file, logger)
 
-    frequency_bit_test = error_hendler(frequency_bit_test, logger)
-    same_consecutive_bits = error_hendler(same_consecutive_bits, logger)
-    longest_ones_seq = error_hendler(longest_ones_seq, logger)
+    frequency_bit_test = error_handler(frequency_bit_test, logger)
+    same_consecutive_bits = error_handler(same_consecutive_bits, logger)
+    longest_ones_seq = error_handler(longest_ones_seq, logger)
 
-    main(cpp_seq, java_seq, logger)
+    main(cpp_seq, java_seq)
     #python nist_tests.py random_generators\\files\\cpp_gen.txt random_generators\\files\\java_gen.txt
