@@ -8,6 +8,7 @@ project_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."
 sys.path.append(project_directory)
 
 from io_to_file import read_file
+from utils.help_funcs import max_ones_seq
 
 
 def frequency_bit_test(seq: str) -> float:
@@ -15,9 +16,45 @@ def frequency_bit_test(seq: str) -> float:
     return math.erfc(sn/math.sqrt(2))
 
 
+def same_consecutive_bits(seq: str) -> float:
+    n: int = len(seq)
+    ones_part: float = seq.count("1")/n
+
+    if abs(ones_part - 0.5) >= 2/math.sqrt(n):
+        return 0
+    
+    vn: int = sum([0 if seq[i] == seq[i + 1] else 1 for i in range(n - 1)])
+
+    return math.erfc(abs(vn - 2 * n * ones_part * (1 - ones_part))/(2*math.sqrt(2 * n) * ones_part * (1 - ones_part)))
+
+
+def longest_ones_seq(seq: str) -> float:
+    n = len(seq)
+    blocks: int = n//8
+
+    seq_lens = []
+
+    for i in range(blocks):
+        seq_lens.append(max_ones_seq(seq[i*8: i*8 + 8]))
+    
+    v1 = seq_lens.count(0) +  seq_lens.count(1)
+    v2 = seq_lens.count(2)
+    v3 = seq_lens.count(3)
+    v4 = blocks - v1 - v2 - v3
+
+    
+
+
+
 def main(cpp_seq: str, java_seq: str, logger: logging.Logger):
     print(f"'P' value for frequency bit test(C++): {frequency_bit_test(cpp_seq)}")
     print(f"'P' value for frequency bit test(Java): {frequency_bit_test(java_seq)}")
+
+    print(f"'P' value for same consecutive bits test(C++): {same_consecutive_bits(cpp_seq)}")
+    print(f"'P' value for same consecutive bits test(Java): {same_consecutive_bits(java_seq)}")
+
+    print(f"'P' value for longest ones sequences test(C++): {longest_ones_seq(cpp_seq)}")
+    print(f"'P' value for longest ones sequences test(Java): {longest_ones_seq(java_seq)}")
 
 
 if __name__ == "__main__":
