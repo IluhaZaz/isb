@@ -2,8 +2,11 @@ import logging
 import argparse
 import math
 
+from scipy.special import gammainc
+
 from utils.io_to_file import read_file
 from utils.help_funcs import max_ones_seq
+from utils.constants import pi0, pi1, pi2, pi3
 
 
 def frequency_bit_test(seq: str) -> float:
@@ -36,9 +39,12 @@ def longest_ones_seq(seq: str) -> float:
     v2 = seq_lens.count(2)
     v3 = seq_lens.count(3)
     v4 = blocks - v1 - v2 - v3
+    v = [v1, v2, v3, v4]
 
-    
+    pi = [pi0, pi1, pi2, pi3]
+    xi2 = sum([math.pow(v[i] - 16 * pi[i], 2)/(16 * pi[i]) for i in range(4)])
 
+    return gammainc(1.5, xi2/2)
 
 
 def main(cpp_seq: str, java_seq: str, logger: logging.Logger):
