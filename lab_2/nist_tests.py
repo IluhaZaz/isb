@@ -1,13 +1,8 @@
 import logging
 import argparse
-import os
-import sys
 import math
 
-project_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.append(project_directory)
-
-from io_to_file import read_file
+from utils.io_to_file import read_file
 from utils.help_funcs import max_ones_seq
 
 
@@ -79,4 +74,4 @@ if __name__ == "__main__":
     java_seq: str = read_file(args.java_seq_file, logger)
 
     main(cpp_seq, java_seq, logger)
-    #python tests\\nist_tests.py random_generators\\files\\cpp_gen.txt random_generators\\files\\java_gen.txt
+    #python nist_tests.py random_generators\\files\\cpp_gen.txt random_generators\\files\\java_gen.txt
