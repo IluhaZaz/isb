@@ -4,12 +4,58 @@ import math
 
 from scipy.special import gammainc
 
-from utils.help_funcs import read_file
-from utils.help_funcs import max_ones_seq
-from utils.constants import pi0, pi1, pi2, pi3
-from utils.handlers import error_handler
+from constants import pi
 
 
+#Part with help funcs
+def max_ones_seq(seq: str) -> int:
+
+    """
+    Counts max length of ones sequence in 'seq'
+    """
+
+    res = 0
+    c = 0
+    for i in seq:
+        if i == "1":
+            c += 1
+        else:
+            res = max(res, c)
+            c = 0
+    res = max(res, c)
+    return res
+
+
+def read_file(file: str, logger: logging.Logger) -> str:
+
+    """
+    Reads data from 'file'
+    """
+
+    res = ""
+    try:
+        with open(file, mode = "r", encoding = "utf-8") as f:
+            res = f.read()
+    except:
+        logger.critical("Can't open input file")
+    return res
+
+
+def error_handler(func, logger: logging.Logger):
+
+    """
+    Catches errors that may occure during 'func' execution
+    """
+
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception:
+            logger.critical("Error encountered")
+    return wrapper
+
+
+#Main funcs for tests
 def frequency_bit_test(seq: str) -> float:
 
     """
@@ -60,7 +106,6 @@ def longest_ones_seq(seq: str) -> float:
     v4 = blocks - v1 - v2 - v3
     v = [v1, v2, v3, v4]
 
-    pi = [pi0, pi1, pi2, pi3]
     xi2 = sum([math.pow(v[i] - 16 * pi[i], 2)/(16 * pi[i]) for i in range(4)])
 
     return gammainc(1.5, xi2/2)
