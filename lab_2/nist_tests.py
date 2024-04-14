@@ -4,7 +4,7 @@ import math
 
 from scipy.special import gammainc
 
-from constants import pi
+from constants import PI
 
 
 #Part with help funcs
@@ -106,7 +106,7 @@ def longest_ones_seq(seq: str) -> float:
     v4 = blocks - v1 - v2 - v3
     v = [v1, v2, v3, v4]
 
-    xi2 = sum([math.pow(v[i] - 16 * pi[i], 2)/(16 * pi[i]) for i in range(4)])
+    xi2 = sum([math.pow(v[i] - 16 * PI[i], 2)/(16 * PI[i]) for i in range(4)])
 
     return gammainc(1.5, xi2/2)
 
