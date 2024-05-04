@@ -45,34 +45,35 @@ class AsymmetricKey:
             return False
 
 
-    def dserialize_keys(self, public_pem: str, private_pem: str, logger) -> bool:
+    @staticmethod
+    def deserialize_keys(public_pem: str, private_pem: str, logger) -> tuple[bytes, bytes]:
         try:
             with open(public_pem, 'rb') as pem_in:
                 public_bytes = pem_in.read()
-                self.public_key = load_pem_public_key(public_bytes)
+                public_key = load_pem_public_key(public_bytes)
         except:
             logger.critical("Error while reading public key from file")
-            return False
+            return None
         
         try:
             with open(private_pem, 'rb') as pem_in:
                 private_bytes = pem_in.read()
-                self.private_key = load_pem_private_key(private_bytes,password=None,)
-                return True
+                private_key = load_pem_private_key(private_bytes,password=None,)
+                return (private_key, public_key)
         except:
             logger.critical("Error while reading private key from file")
-            return False
+            return None
         
 
     @staticmethod
-    def encrypt_symm_key(key: bytes, public_key: bytes) -> bytes:
+    def encrypt_symm_key(key: bytes, public_key) -> bytes:
         res = public_key.encrypt(key, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), 
                                                         algorithm=hashes.SHA256(),label=None))
         return res
     
 
     @staticmethod
-    def dencrypt_symm_key(key: bytes, private_key: bytes) -> bytes:
+    def decrypt_symm_key(key: bytes, private_key) -> bytes:
         res = private_key.decrypt(key, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), 
                                                           algorithm=hashes.SHA256(),label=None))
         return res

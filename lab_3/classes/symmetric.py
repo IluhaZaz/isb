@@ -47,22 +47,22 @@ class SymmetricKey:
     @staticmethod
     def encrypt(text_path: str, encrypted_text_path: str, key: bytes, logger) -> None:
 
-        text = read_bytes(text_path)
+        text = read_bytes(text_path, logger)
 
-        padder = padding.ANSIX923(16).padder()
+        padder = padding.ANSIX923(128).padder()
         padded_text = padder.update(text)+padder.finalize()
 
         iv = os.urandom(8)
         cipher = Cipher(algorithms.Blowfish(key), modes.CBC(iv))
         encryptor = cipher.encryptor()
-        c_text = encryptor.update(padded_text) + encryptor.finalize()
+        c_text = iv + encryptor.update(padded_text) + encryptor.finalize()
 
         write_bytes(encrypted_text_path, c_text, logger)
 
     
     @staticmethod
     def decrypt(text_path: str, decrypted_text_path: str, key: bytes, logger) -> None:
-        text = read_bytes(text_path)
+        text = read_bytes(text_path, logger)
 
         iv = text[:8]
         text = text[8:]
@@ -71,7 +71,7 @@ class SymmetricKey:
         decryptor = cipher.decryptor()
 
         text = decryptor.update(text) + decryptor.finalize()
-        unpadder = padding.ANSIX923(16).unpadder()
+        unpadder = padding.ANSIX923(128).unpadder()
         unpadded_text = unpadder.update(text) + unpadder.finalize()
         text = unpadded_text.decode('UTF-8')
 
