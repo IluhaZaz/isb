@@ -1,0 +1,5 @@
+{
+    "private_key": "classes\\files\\private_key.pem",
+    "public_key": "classes\\files\\public_key.pem",
+    "symmetric_key": "classes\\files\\symmetric_key.txt"
+}
