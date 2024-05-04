@@ -2,6 +2,9 @@ import logging
 
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.serialization import load_pem_public_key, load_pem_private_key
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
 
 
 class AsymmetricKey:
@@ -43,3 +46,34 @@ class AsymmetricKey:
         except:
             self.logger.critical("Error while writing private key to file")
             return False
+
+
+    def dserialize_key(self, public_pem: str, private_pem: str) -> bool:
+        try:
+            with open(public_pem, 'rb') as pem_in:
+                public_bytes = pem_in.read()
+                self.public_key = load_pem_public_key(public_bytes)
+        except:
+            self.logger.critical("Error while reading public key from file")
+            return False
+        
+        try:
+            with open(private_pem, 'rb') as pem_in:
+                private_bytes = pem_in.read()
+                self.private_key = load_pem_private_key(private_bytes,password=None,)
+                return True
+        except:
+            self.logger.critical("Error while reading private key from file")
+            return False
+        
+
+    def encrypt_symm_key(self, key: bytes) -> bytes:
+        res = self.public_key.encrypt(key, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), 
+                                                        algorithm=hashes.SHA256(),label=None))
+        return res
+    
+
+    def dencrypt_symm_key(self, key: bytes) -> bytes:
+        res = self.private_key.decrypt(key, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), 
+                                                          algorithm=hashes.SHA256(),label=None))
+        return res
