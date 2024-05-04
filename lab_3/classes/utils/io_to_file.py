@@ -14,13 +14,13 @@ def read_bytes(file: str, logger: Logger) -> bytes:
     return res
 
 
-def write_bytes(path: str, text: bytes) -> None:
+def write_bytes(path: str, text: bytes, logger: Logger) -> None:
 
     try:
         with open(path, "wb") as file:
             file.write(text)
     except Exception:
-        print("Can't open output json file")
+        logger.critical("Can't open output json file")
 
 
 def read_file(file: str, logger: Logger) -> str:
