@@ -1,4 +1,5 @@
 import os
+import logging
 
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -12,7 +13,7 @@ class SymmetricKey:
         self.key = None
 
     
-    def generate_key(self, logger, key_byte_size: int = 16) -> bool:
+    def generate_key(self, logger: logging.Logger, key_byte_size: int = 16) -> bool:
 
         if not 4 <= key_byte_size <= 56:
             logger.error("Key size must be from 4 to 56 in bytes") 
@@ -22,7 +23,7 @@ class SymmetricKey:
         return True
     
 
-    def serialize_key(self, path: str, logger) -> bool:
+    def serialize_key(self, path: str, logger: logging.Logger) -> bool:
         try:
             write_bytes(path, self.key, logger)
             return True
@@ -33,7 +34,7 @@ class SymmetricKey:
         return False
 
 
-    def deserialize_key(self, path: str, logger) -> bool:
+    def deserialize_key(self, path: str, logger: logging.Logger) -> bool:
         try:
             self.key = read_bytes(path, logger)
             return True
@@ -45,7 +46,7 @@ class SymmetricKey:
     
 
     @staticmethod
-    def encrypt(text_path: str, encrypted_text_path: str, key: bytes, logger) -> None:
+    def encrypt(text_path: str, encrypted_text_path: str, key: bytes, logger: logging.Logger) -> None:
 
         text = read_bytes(text_path, logger)
 
@@ -61,7 +62,7 @@ class SymmetricKey:
 
     
     @staticmethod
-    def decrypt(text_path: str, decrypted_text_path: str, key: bytes, logger) -> None:
+    def decrypt(text_path: str, decrypted_text_path: str, key: bytes, logger: logging.Logger) -> None:
         text = read_bytes(text_path, logger)
 
         iv = text[:8]
