@@ -5,7 +5,7 @@ from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 
-from classes.utils.io_to_file import read_bytes, write_bytes, write_to_file
+from classes.io_to_file import read_bytes, write_bytes, write_to_file
 
 class SymmetricKey:
 
@@ -14,6 +14,8 @@ class SymmetricKey:
 
     
     def generate_key(self, logger: logging.Logger, key_byte_size: int = 16) -> bool:
+
+        """Generates key for Blowfish algorithm"""
 
         if not 4 <= key_byte_size <= 56:
             logger.error("Key size must be from 4 to 56 in bytes") 
@@ -24,6 +26,9 @@ class SymmetricKey:
     
 
     def serialize_key(self, path: str, logger: logging.Logger) -> bool:
+
+        """Serializes Blowfish's key"""
+
         try:
             write_bytes(path, self.key, logger)
             return True
@@ -35,6 +40,9 @@ class SymmetricKey:
 
 
     def deserialize_key(self, path: str, logger: logging.Logger) -> bool:
+
+        """Deserializes Blowfish's key"""
+
         try:
             self.key = read_bytes(path, logger)
             return True
@@ -47,6 +55,8 @@ class SymmetricKey:
 
     @staticmethod
     def encrypt(text_path: str, encrypted_text_path: str, key: bytes, logger: logging.Logger) -> None:
+
+        "Encrypts text with Blowfish algorothm"
 
         text = read_bytes(text_path, logger)
 
@@ -63,6 +73,9 @@ class SymmetricKey:
     
     @staticmethod
     def decrypt(text_path: str, decrypted_text_path: str, key: bytes, logger: logging.Logger) -> None:
+
+        "Decrypts text with Blowfish algorothm"
+
         text = read_bytes(text_path, logger)
 
         iv = text[:8]
