@@ -57,8 +57,6 @@ if __name__ == "__main__":
 
     logger = logging.getLogger(__name__)
 
-    paths = read_json("settings.json", logger)
-
     symmetric = SymmetricKey()
     asymmetric = AsymmetricKey()
 
@@ -69,9 +67,13 @@ if __name__ == "__main__":
     group.add_argument('-enc','--encryption', help='Starts encryption mode', action="store_true")
     group.add_argument('-dec','--decryption', help='Starts decrypyion mode', action="store_true")
 
+    parser.add_argument('-p', '--paths', type = str, help = 'Path to json file with paths')
+
     parser.add_argument('-k', '--key_byte_size', type = int, default = 16, help = 'Size of symmetric key in bytes')
 
     args = parser.parse_args()
+
+    paths = read_json(args.paths, logger)
 
     if args.generation is not None:
         keys_generation(symmetric, asymmetric, paths, logger, args.key_byte_size)
@@ -79,6 +81,6 @@ if __name__ == "__main__":
         encrypt_data(paths, logger)
     else:
         decrypt_data(paths, logger)
-    #python main.py -gen -k 16
-    #python main.py -enc
-    #python main.py -dec
+    #python main.py -gen -p settings.json -k 16
+    #python main.py -enc -p settings.json
+    #python main.py -dec -p settings.json
