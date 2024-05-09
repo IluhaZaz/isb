@@ -126,3 +126,4 @@ class FileHandler:
             logger.critical("Error while reading file")
 
         return None
+    

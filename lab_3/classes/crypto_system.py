@@ -96,3 +96,4 @@ class HybridCryptoSystem:
         symm_key = AsymmetricKey.decrypt_symm_key(enc_symm_key, private_key)
 
         HybridCryptoSystem.decrypt(paths["encrypted_text"], paths["decrypted_text"], symm_key, logger)
+        
