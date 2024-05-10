@@ -19,7 +19,8 @@ def get_valide_card_num(hash: str, last_4_nums: str, bin: str) -> list[int]:
     return res
 
 
-def find_number(hash: str, last_4_nums: str, bins: list[int], path_to_save: str, logger: logging.Logger) -> list[int]:
+def find_number(hash: str, last_4_nums: str, bins: list[int], 
+                path_to_save: str, logger: logging.Logger) -> list[int]:
 
     ans = []
     args = [(hash, last_4_nums, str(bin)) for bin in bins]
@@ -58,7 +59,7 @@ def luhn_algorithm(card_number: str) -> bool:
 
 
 def get_stats(hash: str, last_4_nums: str, bins: list[int], 
-logger: logging.Logger, path_to_save: str = "results\\times.txt") -> list[float]:
+             logger: logging.Logger, path_to_save: str) -> list[float]:
 
     times = []
     
@@ -76,7 +77,7 @@ logger: logging.Logger, path_to_save: str = "results\\times.txt") -> list[float]
     return times
 
 
-def draw_graph(data: list[float], path_to_save: str = "results\\graph.png"):
+def draw_graph(data: list[float], logger: logging.Logger, path_to_save: str):
 
     plt.plot(range(1, len(data) + 1), data)
 
@@ -88,5 +89,9 @@ def draw_graph(data: list[float], path_to_save: str = "results\\graph.png"):
     plt.xlabel('Количество потоков, шт')
     plt.ylabel('Время выполнения, с')
 
-    plt.savefig(path_to_save)
+    try:
+        plt.savefig(path_to_save)
+    except:
+        logger.error("Graph didn't saved")
+
     plt.show()

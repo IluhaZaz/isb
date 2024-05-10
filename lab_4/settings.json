@@ -1,0 +1,6 @@
+{
+    "constants": "constants.json",
+    "card_number": "results\\card_number.txt",
+    "times": "results\\times.txt",
+    "graph": "results\\graph.png"
+}

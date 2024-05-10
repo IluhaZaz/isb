@@ -1,4 +1,5 @@
 import logging
+import argparse
 
 from functions import find_number, luhn_algorithm, get_stats, draw_graph
 
@@ -7,16 +8,53 @@ from io_to_file import FileHandler
 
 if __name__ == "__main__":
 
+    logging.basicConfig(
+    level=logging.DEBUG,
+    format='[{asctime}] #{levelname:8} {filename}:'
+           '{lineno} - {name} - {message}',
+    style='{')
+
     logger = logging.getLogger(__name__)
 
-    constants = FileHandler.read_json("constants.json", logger)
+    parser = argparse.ArgumentParser()
 
-    #find_number(constants["hash"], constants["last_4_nums"], constants["bins"], "results\\card_number.txt", logger)
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-card','--get_card', help='Finds card by hash', action="store_true")
+    group.add_argument('-luhn','--luhn_alg', help='Checks num with Luhn algorithm', action="store_true")
+    group.add_argument('-graph','--draw_graph', help='Draws ghaph num_of_threads/seconds', action="store_true")
+
+    parser.add_argument('-p', '--paths', type = str, help = 'Path to json file with paths')
+
+    parser.add_argument('-ch', '--change_path', type = str, help = 'Change path to files')
+
+    args = parser.parse_args()
+
+    paths = FileHandler.read_json(args.paths, logger)
+
+    constants = FileHandler.read_json(paths["constants"], logger)
     
-    #print(luhn_algorithm("5551565655515623"))
 
-    #print(get_stats(constants["hash"], constants["last_4_nums"], constants["bins"], logger))
+    if args.change_path:
+        temp = args.change_path.split(",")
 
-    data: list[float] = list(map(float, FileHandler.read_file("results\\times.txt", logger).split()))
+        if temp[0] in paths.keys():
+            paths[temp[0]] = temp[1]
 
-    draw_graph(data)
+    if args.get_card is not None:
+        find_number(constants["hash"], constants["last_4_nums"], constants["bins"], paths["card_number"], logger)
+    
+    elif args.luhn is not None:
+        card_num: int = FileHandler.read_file(paths['card_number'], logger)
+        luhn_algorithm(card_num)
+    
+    elif args.graph is not None:
+        data = get_stats(constants["hash"], constants["last_4_nums"], constants["bins"], logger, paths["times"])
+
+        data = map(int, data)
+
+        draw_graph(data, logger, paths["graph"])
+    
+    FileHandler.write_to_json(paths, args.paths, logger)
+    #python main.py -card -p settings.json
+    #python main.py -luhn -p settings.json
+    #python main.py -graph -p settings.json
