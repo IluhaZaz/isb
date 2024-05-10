@@ -63,7 +63,7 @@ def get_stats(hash: str, last_4_nums: str, bins: list[int],
 
     times = []
     
-    for i in tqdm(range(1, int(1.5 * multiprocessing.cpu_count()) + 1), desc='Количество потоков'):
+    for i in tqdm(range(1, int(1.5 * multiprocessing.cpu_count()) + 1), desc='Num of processes'):
 
         start = time.time()
         args = [(hash, last_4_nums, str(bin)) for bin in bins]
@@ -84,10 +84,10 @@ def draw_graph(data: list[float], logger: logging.Logger, path_to_save: str):
     m = min(data)
     m = data.index(m)
     plt.scatter([m + 1], [data[m]], c = "red", )
-    plt.annotate(f"Точка минимума ({m + 1}, {round(data[m], 2)})", (m + 1, data[m]))
+    plt.annotate(f"Minimum point ({m + 1}, {round(data[m], 2)})", (m + 1, data[m]))
 
-    plt.xlabel('Количество потоков, шт')
-    plt.ylabel('Время выполнения, с')
+    plt.xlabel('Num of processes')
+    plt.ylabel('Executable time, s')
 
     try:
         plt.savefig(path_to_save)
