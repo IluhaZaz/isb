@@ -1,6 +1,10 @@
 import multiprocessing
 import hashlib
 import logging
+import time
+import matplotlib.pyplot as plt
+
+from tqdm import tqdm
 
 from io_to_file import FileHandler
 
@@ -51,4 +55,38 @@ def luhn_algorithm(card_number: str) -> bool:
     c: int = 10 - ((s % 10) % 10)
 
     return c == int(card_number[-1])
+
+
+def get_stats(hash: str, last_4_nums: str, bins: list[int], 
+logger: logging.Logger, path_to_save: str = "results\\times.txt") -> list[float]:
+
+    times = []
     
+    for i in tqdm(range(1, int(1.5 * multiprocessing.cpu_count()) + 1), desc='Количество потоков'):
+
+        start = time.time()
+        args = [(hash, last_4_nums, str(bin)) for bin in bins]
+        with multiprocessing.Pool(i) as pool:
+            pool.starmap(get_valide_card_num, args)
+            times.append(time.time() - start)
+
+    times = map(str, times)
+
+    FileHandler.write_to_file(path_to_save, " ".join(times), logger)
+    return times
+
+
+def draw_graph(data: list[float], path_to_save: str = "results\\graph.png"):
+
+    plt.plot(range(1, len(data) + 1), data)
+
+    m = min(data)
+    m = data.index(m)
+    plt.scatter([m + 1], [data[m]], c = "red", )
+    plt.annotate("Точка минимума", (m + 1, data[m]))
+
+    plt.xlabel('Количество потоков, шт')
+    plt.ylabel('Время выполнения, с')
+
+    plt.savefig(path_to_save)
+    plt.show()
