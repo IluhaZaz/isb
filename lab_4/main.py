@@ -40,17 +40,17 @@ if __name__ == "__main__":
         if temp[0] in paths.keys():
             paths[temp[0]] = temp[1]
 
-    if args.get_card is not None:
+    if args.get_card:
         find_number(constants["hash"], constants["last_4_nums"], constants["bins"], paths["card_number"], logger)
     
-    elif args.luhn is not None:
+    elif args.luhn_alg:
         card_num: int = FileHandler.read_file(paths['card_number'], logger)
-        luhn_algorithm(card_num)
+        print(f"Card number is {luhn_algorithm(card_num)}")
     
-    elif args.graph is not None:
+    elif args.draw_graph:
         data = get_stats(constants["hash"], constants["last_4_nums"], constants["bins"], logger, paths["times"])
 
-        data = map(int, data)
+        data = list(map(float, data))
 
         draw_graph(data, logger, paths["graph"])
     
@@ -58,3 +58,4 @@ if __name__ == "__main__":
     #python main.py -card -p settings.json
     #python main.py -luhn -p settings.json
     #python main.py -graph -p settings.json
+    #python main.py -ch graph,new_graph.png -p settings.json

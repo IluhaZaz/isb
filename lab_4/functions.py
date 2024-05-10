@@ -71,7 +71,7 @@ def get_stats(hash: str, last_4_nums: str, bins: list[int],
             pool.starmap(get_valide_card_num, args)
             times.append(time.time() - start)
 
-    times = map(str, times)
+    times = list(map(str, times))
 
     FileHandler.write_to_file(path_to_save, " ".join(times), logger)
     return times
@@ -84,7 +84,7 @@ def draw_graph(data: list[float], logger: logging.Logger, path_to_save: str):
     m = min(data)
     m = data.index(m)
     plt.scatter([m + 1], [data[m]], c = "red", )
-    plt.annotate("Точка минимума", (m + 1, data[m]))
+    plt.annotate(f"Точка минимума ({m + 1}, {round(data[m], 2)})", (m + 1, data[m]))
 
     plt.xlabel('Количество потоков, шт')
     plt.ylabel('Время выполнения, с')
