@@ -41,9 +41,9 @@ if __name__ == "__main__":
         if temp[0] in paths.keys():
             paths[temp[0]] = temp[1]
 
-    if args.generation is not None:
+    if args.generation:
         system.keys_generation(paths, logger, args.key_byte_size)
-    elif args.encryption is not None:
+    elif args.encryption:
         HybridCryptoSystem.encrypt_data(paths, logger)
     else:
         HybridCryptoSystem.decrypt_data(paths, logger)
