@@ -11,6 +11,8 @@ from io_to_file import FileHandler
 
 def get_valide_card_num(hash: str, last_4_nums: str, bin: str) -> list[int]:
 
+    """Returns all valid card nums"""
+
     res = []
     for middle_num in range(0, 999999 + 1):
         card_num: str = bin + str(middle_num).zfill(6) + last_4_nums
@@ -21,6 +23,8 @@ def get_valide_card_num(hash: str, last_4_nums: str, bin: str) -> list[int]:
 
 def find_number(hash: str, last_4_nums: str, bins: list[int], 
                 path_to_save: str, logger: logging.Logger) -> list[int]:
+    
+    """Returns suitable card numbers"""
 
     ans = []
     args = [(hash, last_4_nums, str(bin)) for bin in bins]
@@ -34,6 +38,8 @@ def find_number(hash: str, last_4_nums: str, bins: list[int],
 
 def help_sum(num: int) -> int:
 
+    """Returns sum of number's digits"""
+
     res = 0
 
     while num:
@@ -43,6 +49,8 @@ def help_sum(num: int) -> int:
 
 
 def luhn_algorithm(card_number: str) -> bool:
+
+    """Returns true if card is valid else false"""
     
     temp = card_number[::-1][1:]
     s: int = 0
@@ -60,6 +68,9 @@ def luhn_algorithm(card_number: str) -> bool:
 
 def get_stats(hash: str, last_4_nums: str, bins: list[int], 
              logger: logging.Logger, path_to_save: str) -> list[float]:
+    
+    """Conuts time for executing func to find
+      card nums witn different processes num"""
 
     times = []
     
@@ -78,6 +89,8 @@ def get_stats(hash: str, last_4_nums: str, bins: list[int],
 
 
 def draw_graph(data: list[float], logger: logging.Logger, path_to_save: str):
+
+    """Draws graphic by provided data"""
 
     plt.plot(range(1, len(data) + 1), data)
 
